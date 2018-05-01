@@ -7,7 +7,6 @@ if($_POST['rname']!="" &&  $_POST['remail']!="" && $_POST['rusername']!="" &&  $
 	$email = $_POST['remail'];
 	$username = $_POST['rusername'];
 	$password = $_POST['rpassword'];
-	$db->deleteTempUser($email);
 	if ($db->isUsernameExisted($username)) {
 		$response["error"] = TRUE;
 		$response["error_message"] = "Username already existed";
@@ -21,10 +20,10 @@ if($_POST['rname']!="" &&  $_POST['remail']!="" && $_POST['rusername']!="" &&  $
 		$to= $email;
 		$subject = 'Verification code for MapMyEnviron';
 		$message = 'Hello '.$name.'. <br><br>Welcome to MapMyEnviron. This is your Activation code <b>'.$vcode.'</b>';
-		$sendMail = $db->sendVerificationCode($to,$subject,$message,$name);
-		//$sendMail = TRUE;
+		//$sendMail = $db->sendVerificationCode($to,$subject,$message,$name);
+		$sendMail = TRUE;
 		if ($sendMail) {
-			$user = $db->storeUser($name,$email,$username,$password,$vcode);
+			$user = $db->storeUser($name,$email,$username,$password);
 			if($user){
 				$response["error"] = FALSE;
 				$response["error_message"] = "Register Success";
@@ -32,7 +31,6 @@ if($_POST['rname']!="" &&  $_POST['remail']!="" && $_POST['rusername']!="" &&  $
 				$response["user"]["username"] = $user["username"];
 				$response["user"]["name"] = $user["name"];
 				$response["user"]["email"] = $user["email"];
-				$response["user"]["vcode"] = $user["vcode"];
 				echo json_encode($response);
 			}else{
 				$response["error"] = TRUE;

@@ -14,7 +14,7 @@
 
 	$description = $_POST['description'];
 
-	$severity = $_POST['severity'];
+	$title = $_POST['title'];
 
 	$latitude = $_POST['latitude'];
 
@@ -45,11 +45,11 @@ if (!move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_path)) {
 
 	        $file_name = "photo_upload/".$img_name;
 
-echo $_FILES['fileToUpload']['tmp_name']."\n".$file_name."\n";
+//echo $_FILES['fileToUpload']['tmp_name']."\n".$file_name."\n";
 
 
 
-			$report = $db->storeReport($username,$category,$description,$severity,$target_path,$latitude,$longitude);
+			$report = $db->storeReport($username,$category,$description,$title,$target_path,$latitude,$longitude);
 
 
 
@@ -65,7 +65,7 @@ echo $_FILES['fileToUpload']['tmp_name']."\n".$file_name."\n";
 
 				$response["report"]["description"] = $report["description"];
 
-				$response["report"]["severity"] = $report["severity"];
+				$response["report"]["title"] = $report["title"];
 
 				echo json_encode($response);
 

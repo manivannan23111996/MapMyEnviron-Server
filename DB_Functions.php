@@ -13,7 +13,7 @@ class DB_Functions
 	}
 
 	public function isUsernameExisted($username){
-		$sql = "SELECT FROM verifieduser WHERE username='".$username."'";
+		$sql = "SELECT FROM users WHERE username='".$username."'";
 		$result = pg_query($this->conn,$sql);
 		$rows = pg_num_rows($result);
 		if($rows>0){
@@ -24,7 +24,7 @@ class DB_Functions
 	}
 
 	public function isEmailExisted($email){
-		$sql = "SELECT FROM verifieduser WHERE email='".$email."'";
+		$sql = "SELECT FROM users WHERE email='".$email."'";
 		$result = pg_query($this->conn,$sql);
 		$rows = pg_num_rows($result);
 		if($rows>0){
@@ -33,11 +33,12 @@ class DB_Functions
 			return FALSE;
 		}
 	}
-	public function storeUser($name,$email,$username,$password,$vcode){
-		$sql = "INSERT INTO mapxuser(name,email,username,password,vcode) VALUES('".$name."','".$email."','".$username."','".$password."','".$vcode."')";
+	public function storeUser($name,$email,$username,$password){
+		$sql = "INSERT INTO users(name,email,username,password) VALUES('".$name."','".$email."','".$username."','".$password."')";
+		//echo $sql;
 		$result = pg_query($this->conn,$sql);
 		if($result){
-			$c_sql = "SELECT * FROM mapxuser WHERE email='".$email."'";
+			$c_sql = "SELECT * FROM users WHERE email='".$email."'";
 			$res = pg_query($this->conn,$c_sql);
 			$user = pg_fetch_array($res);
 			return $user;
@@ -46,7 +47,7 @@ class DB_Functions
 		}
 	}
 	public function getUser($username,$password){
-		$sql = "SELECT * FROM verifieduser WHERE username='".$username."'";
+		$sql = "SELECT * FROM users WHERE username='".$username."'";
 		$result = pg_query($this->conn,$sql);
 		$user = pg_fetch_array($result);
 		if($user){ 
@@ -184,9 +185,9 @@ class DB_Functions
 			return FALSE;
 		}
 	}
-	public function storeReport($username,$category,$description,$severity,$image,$latitude,$longitude){
+	public function storeReport($username,$category,$description,$title,$image,$latitude,$longitude){
 
-		$sql = "INSERT INTO ".$category."(username,description,severity,image,geom) VALUES('".$username."','".$description."','".$severity."','".$image."',ST_GeomFromText('POINT(".$longitude." ".$latitude.")',4326))";
+		$sql = "INSERT INTO ".$category."(username,description,title,image,geom) VALUES('".$username."','".$description."','".$title."','".$image."',ST_GeomFromText('POINT(".$longitude." ".$latitude.")',4326))";
 
 		//echo $sql;
 
